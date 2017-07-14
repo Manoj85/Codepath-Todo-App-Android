@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.codepath.simpletodo.data.ItemContract;
+import com.codepath.simpletodo.data.TodoItemContract;
 import com.codepath.simpletodo.data.TodoItemDbHelper;
 
 public class EditorActivity extends AppCompatActivity {
@@ -33,18 +33,18 @@ public class EditorActivity extends AppCompatActivity {
     private Spinner mStatusSpinner;
 
     /**
-     * Priority of the TodoItem. The possible valid values are in the ItemContract.java file:
-     * {@link ItemContract.ItemEntry#PRIORITY_LOW}, {@link ItemContract.ItemEntry#PRIORITY_MEDIUM}, or
-     * {@link ItemContract.ItemEntry#PRIORITY_HIGH}.
+     * Priority of the TodoItem. The possible valid values are in the TodoItemContract.java file:
+     * {@link TodoItemContract.ItemEntry#PRIORITY_LOW}, {@link TodoItemContract.ItemEntry#PRIORITY_MEDIUM}, or
+     * {@link TodoItemContract.ItemEntry#PRIORITY_HIGH}.
      */
-    private int mPriority = ItemContract.ItemEntry.PRIORITY_LOW;
+    private int mPriority = TodoItemContract.ItemEntry.PRIORITY_LOW;
 
     /**
-     * Status of the TodoItem. The possible valid values are in the ItemContract.java file:
-     * {@link ItemContract.ItemEntry#STATUS_TODO}, {@link ItemContract.ItemEntry#STATUS_INPROGRESS}, or
-     * {@link ItemContract.ItemEntry#STATUS_DONE}.
+     * Status of the TodoItem. The possible valid values are in the TodoItemContract.java file:
+     * {@link TodoItemContract.ItemEntry#STATUS_TODO}, {@link TodoItemContract.ItemEntry#STATUS_INPROGRESS}, or
+     * {@link TodoItemContract.ItemEntry#STATUS_DONE}.
      */
-    private int mStatus = ItemContract.ItemEntry.STATUS_TODO;
+    private int mStatus = TodoItemContract.ItemEntry.STATUS_TODO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,13 +131,13 @@ public class EditorActivity extends AppCompatActivity {
         // Create a ContentValues object where column names are the keys,
         // and todoitem attributes from the editor are the values
         ContentValues values = new ContentValues();
-        values.put(ItemContract.ItemEntry.COLUMN_ITEM_NAME, nameString);
-        values.put(ItemContract.ItemEntry.COLUMN_ITEM_NOTES, notesString);
-        values.put(ItemContract.ItemEntry.COLUMN_ITEM_PRIORITY, mPriority);
-        values.put(ItemContract.ItemEntry.COLUMN_ITEM_STATUS, mStatus);
+        values.put(TodoItemContract.ItemEntry.COLUMN_ITEM_NAME, nameString);
+        values.put(TodoItemContract.ItemEntry.COLUMN_ITEM_NOTES, notesString);
+        values.put(TodoItemContract.ItemEntry.COLUMN_ITEM_PRIORITY, mPriority);
+        values.put(TodoItemContract.ItemEntry.COLUMN_ITEM_STATUS, mStatus);
 
         // Insert a new row for todoitem in the database, returning ID of that new row.
-        long newRowId = db.insert(ItemContract.ItemEntry.TABLE_NAME, null, values);
+        long newRowId = db.insert(TodoItemContract.ItemEntry.TABLE_NAME, null, values);
 
         // Show a toast message depending on whether or not the insertion was successful.
         if (newRowId == -1) {

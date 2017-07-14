@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.codepath.simpletodo.data.ItemContract;
+import com.codepath.simpletodo.data.TodoItemContract;
 import com.codepath.simpletodo.data.TodoItemDbHelper;
 
 public class CatalogActivity extends AppCompatActivity {
@@ -38,13 +38,9 @@ public class CatalogActivity extends AppCompatActivity {
         // To access our database, we instantiate our subclass of SQLiteOpenHelper
         // and pass the context, which is the current activity.
         mDbHelper = new TodoItemDbHelper(this);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
         displayDatabaseInfo();
     }
+
 
     private void displayDatabaseInfo() {
         // Create and/or open a database to read from it.
@@ -53,16 +49,17 @@ public class CatalogActivity extends AppCompatActivity {
         // Define a projection that specifies which columns from the database
         // you will actually use after this query
         String[] projection = {
-                ItemContract.ItemEntry._ID,
-                ItemContract.ItemEntry.COLUMN_ITEM_NAME,
-                ItemContract.ItemEntry.COLUMN_ITEM_NOTES,
-                ItemContract.ItemEntry.COLUMN_ITEM_PRIORITY,
-                ItemContract.ItemEntry.COLUMN_ITEM_STATUS
+                TodoItemContract.ItemEntry._ID,
+                TodoItemContract.ItemEntry.COLUMN_ITEM_NAME,
+                TodoItemContract.ItemEntry.COLUMN_ITEM_NOTES,
+                TodoItemContract.ItemEntry.COLUMN_ITEM_PRIORITY,
+                TodoItemContract.ItemEntry.COLUMN_ITEM_STATUS
         };
 
         // Perform a query on the todoitems table
+        /*
         Cursor cursor = db.query(
-                ItemContract.ItemEntry.TABLE_NAME, // The table to query
+                TodoItemContract.ItemEntry.TABLE_NAME, // The table to query
                 projection,                        // The columns to return
                 null,                              // The columns for the WHERE clause
                 null,                              // The values for the WHERE clause
@@ -70,8 +67,8 @@ public class CatalogActivity extends AppCompatActivity {
                 null,                              // Don't filter by row groups
                 null                               // The sort order
         );
-
-        TextView displayView = (TextView) findViewById(R.id.text_view_item);
+        */
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TodoItemContract.ItemEntry.TABLE_NAME, null);
 
         try {
             // Create a header in the Text View that looks like this:
@@ -81,20 +78,21 @@ public class CatalogActivity extends AppCompatActivity {
             //
             // In the while loop below, iterate through the rows of the cursor and display
             // the information from each column in this order.
-            displayView.setText("The todoitems table contains " + cursor.getCount() + " pets. \n\n");
-            displayView.append(ItemContract.ItemEntry._ID + " - " +
-                    ItemContract.ItemEntry.COLUMN_ITEM_NAME + " - " +
-                    ItemContract.ItemEntry.COLUMN_ITEM_NOTES + " - " +
-                    ItemContract.ItemEntry.COLUMN_ITEM_PRIORITY + " - " +
-                    ItemContract.ItemEntry.COLUMN_ITEM_STATUS + "\n"
+            TextView displayView = (TextView) findViewById(R.id.text_view_item);
+            displayView.setText("The todoitems table contains " + cursor.getCount() + " items. \n\n");
+            displayView.append(TodoItemContract.ItemEntry._ID + " - " +
+                    TodoItemContract.ItemEntry.COLUMN_ITEM_NAME + " - " +
+                    TodoItemContract.ItemEntry.COLUMN_ITEM_NOTES + " - " +
+                    TodoItemContract.ItemEntry.COLUMN_ITEM_PRIORITY + " - " +
+                    TodoItemContract.ItemEntry.COLUMN_ITEM_STATUS + "\n"
             );
 
             // Figure out the index of each column
-            int idColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry._ID);
-            int nameColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_NAME);
-            int notesColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_NOTES);
-            int priorityColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_PRIORITY);
-            int statusColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_STATUS);
+            int idColumnIndex = cursor.getColumnIndex(TodoItemContract.ItemEntry._ID);
+            int nameColumnIndex = cursor.getColumnIndex(TodoItemContract.ItemEntry.COLUMN_ITEM_NAME);
+            int notesColumnIndex = cursor.getColumnIndex(TodoItemContract.ItemEntry.COLUMN_ITEM_NOTES);
+            int priorityColumnIndex = cursor.getColumnIndex(TodoItemContract.ItemEntry.COLUMN_ITEM_PRIORITY);
+            int statusColumnIndex = cursor.getColumnIndex(TodoItemContract.ItemEntry.COLUMN_ITEM_STATUS);
 
             // Iterate through all the returned rows in the cursor
             while (cursor.moveToNext()) {
@@ -125,18 +123,19 @@ public class CatalogActivity extends AppCompatActivity {
     // Helper method to insert hardcoded todoitems data into the database.
     // For debugging purposes only.
     private void insertTodoItems() {
+        System.out.println("insertTodoItems");
         // Gets the database in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         // Create a ContentValues object where column names are the keys,
         // and Task1's pet attributes are the values.
         ContentValues values = new ContentValues();
-        values.put(ItemContract.ItemEntry.COLUMN_ITEM_NAME, "Task1");
-        values.put(ItemContract.ItemEntry.COLUMN_ITEM_NOTES, "Complete mockup development!");
-        values.put(ItemContract.ItemEntry.COLUMN_ITEM_PRIORITY, ItemContract.ItemEntry.PRIORITY_LOW);
-        values.put(ItemContract.ItemEntry.COLUMN_ITEM_STATUS, ItemContract.ItemEntry.STATUS_TODO);
+        values.put(TodoItemContract.ItemEntry.COLUMN_ITEM_NAME, "Task1");
+        values.put(TodoItemContract.ItemEntry.COLUMN_ITEM_NOTES, "Complete mockup development!");
+        values.put(TodoItemContract.ItemEntry.COLUMN_ITEM_PRIORITY, TodoItemContract.ItemEntry.PRIORITY_LOW);
+        values.put(TodoItemContract.ItemEntry.COLUMN_ITEM_STATUS, TodoItemContract.ItemEntry.STATUS_TODO);
 
-        long newRowId = db.insert(ItemContract.ItemEntry.TABLE_NAME, // The tododitems table name
+        long newRowId = db.insert(TodoItemContract.ItemEntry.TABLE_NAME, // The tododitems table name
                 null,   // the name of a column in which the framework
                         // can insert NULL in the event that the ContentValues is empty (if
                         // this is set to "null", then the framework will not insert a row when

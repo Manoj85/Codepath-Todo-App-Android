@@ -5,11 +5,11 @@ import android.provider.BaseColumns;
 /**
  * API Contract for the SimpleTodo app
  */
-public final class ItemContract {
+public final class TodoItemContract {
 
     // To prevent someone from accidentally instantiating the contract class,
     // give it an empty constructor
-    private ItemContract() {}
+    private TodoItemContract() {}
 
     // Inner class that defines constant values for the To-do database table
     public static final class ItemEntry implements BaseColumns {

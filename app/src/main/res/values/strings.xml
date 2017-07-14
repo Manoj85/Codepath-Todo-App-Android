@@ -1,3 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Codepath SimpleTodo</string>
+    <!-- Name for the application [CHAR LIMIT=12] -->
+    <string name="app_name">SimpleTodo</string>
+
+    <!-- Label for overflow menu option that inserts fake pet data into the app [CHAR LIMIT=20] -->
+    <string name="action_insert_dummy_data">Insert Dummy Data</string>
+
+    <!-- Label for overflow menu option that deletes all pet data in the app [CHAR LIMIT=20] -->
+    <string name="action_delete_all_entries">Delete All Items</string>
+
+    <!-- Title for the activity to add a new pet [CHAR LIMIT=20] -->
+    <string name="editor_activity_title_new_item">Add Item</string>
+
+    <!-- Label for editor menu option to save pet and leave editor [CHAR LIMIT=20] -->
+    <string name="action_save">Save</string>
+
+    <!-- Label for editor overflow menu option that deletes the current pet [CHAR LIMIT=20] -->
+    <string name="action_delete">Delete</string>
+
+    <!-- Label for task name of attributes in the editor [CHAR LIMIT=30] -->
+    <string name="label_task_name">Task Name</string>
+
+    <!-- Label for task description of attributes in the editor [CHAR LIMIT=30] -->
+    <string name="label_task_description">Notes</string>
+
+    <!-- Hint for task description of attributes in the editor [CHAR LIMIT=30] -->
+    <string name="hint_item_description">Description (Optional...)</string>
+
+    <!-- Label for task priority of attributes in the editor [CHAR LIMIT=30] -->
+    <string name="label_task_priority">Priority</string>
+
+    <!-- Label for task status of attributes in the editor [CHAR LIMIT=30] -->
+    <string name="label_task_status">Status</string>
+
+    <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
+    <string name="hint_item_name">Name</string>
+
+    <!-- Label for dropdown menu option if the item's priority is low [CHAR LIMIT=20] -->
+    <string name="priority_low">LOW</string>
+
+    <!-- Label for dropdown menu option if the item's priority is medium [CHAR LIMIT=20] -->
+    <string name="priority_medium">MEDIUM</string>
+
+    <!-- Label for dropdown menu option if the item's priority is high [CHAR LIMIT=20] -->
+    <string name="priority_high">HIGH</string>
+
+    <!-- Label for dropdown menu option if the item's status is To-Do [CHAR LIMIT=20] -->
+    <string name="status_todo">TODO</string>
+
+    <!-- Label for dropdown menu option if the item's status is inprogress [CHAR LIMIT=20] -->
+    <string name="status_inprogress">IN PROGRESS</string>
+
+    <!-- Label for dropdown menu option if the item's status is done [CHAR LIMIT=20] -->
+    <string name="status_done">DONE</string>
 </resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- These are the options displayed in the priority drop-down spinner -->
+    <string-array name="array_priority_options">
+        <item>@string/priority_low</item>
+        <item>@string/priority_medium</item>
+        <item>@string/priority_high</item>
+    </string-array>
+    <!-- These are the options displayed in the status drop-down spinner -->
+    <string-array name="array_status_options">
+        <item>@string/status_todo</item>
+        <item>@string/status_done</item>
+        <item>@string/status_inprogress</item>
+    </string-array>
+</resources>

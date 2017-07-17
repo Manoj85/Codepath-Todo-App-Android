@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codepath.simpletodo.data.TodoItemContract;
 import com.codepath.simpletodo.data.TodoItemDbHelper;
@@ -37,7 +38,8 @@ public class CatalogActivity extends AppCompatActivity {
 
         // To access our database, we instantiate our subclass of SQLiteOpenHelper
         // and pass the context, which is the current activity.
-        mDbHelper = new TodoItemDbHelper(this);
+        mDbHelper = TodoItemDbHelper.getInstance(this);
+        // mDbHelper.getReadableDatabase();
         displayDatabaseInfo();
     }
 
@@ -57,7 +59,6 @@ public class CatalogActivity extends AppCompatActivity {
         };
 
         // Perform a query on the todoitems table
-        /*
         Cursor cursor = db.query(
                 TodoItemContract.ItemEntry.TABLE_NAME, // The table to query
                 projection,                        // The columns to return
@@ -67,8 +68,6 @@ public class CatalogActivity extends AppCompatActivity {
                 null,                              // Don't filter by row groups
                 null                               // The sort order
         );
-        */
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TodoItemContract.ItemEntry.TABLE_NAME, null);
 
         try {
             // Create a header in the Text View that looks like this:
@@ -123,15 +122,14 @@ public class CatalogActivity extends AppCompatActivity {
     // Helper method to insert hardcoded todoitems data into the database.
     // For debugging purposes only.
     private void insertTodoItems() {
-        System.out.println("insertTodoItems");
         // Gets the database in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         // Create a ContentValues object where column names are the keys,
         // and Task1's pet attributes are the values.
         ContentValues values = new ContentValues();
-        values.put(TodoItemContract.ItemEntry.COLUMN_ITEM_NAME, "Task1");
-        values.put(TodoItemContract.ItemEntry.COLUMN_ITEM_NOTES, "Complete mockup development!");
+        values.put(TodoItemContract.ItemEntry.COLUMN_ITEM_NAME, "Task");
+        values.put(TodoItemContract.ItemEntry.COLUMN_ITEM_NOTES, "Notes");
         values.put(TodoItemContract.ItemEntry.COLUMN_ITEM_PRIORITY, TodoItemContract.ItemEntry.PRIORITY_LOW);
         values.put(TodoItemContract.ItemEntry.COLUMN_ITEM_STATUS, TodoItemContract.ItemEntry.STATUS_TODO);
 
@@ -142,6 +140,23 @@ public class CatalogActivity extends AppCompatActivity {
                         // there are no values).
                 values  // the ContentValues object containing the info for Task1
         );
+    }
+
+    // Helper method to delete all todoitems data from the database.
+    private void deleteAllTodoItems() {
+        // Gets the database in write mode
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        long deletedRowId = db.delete(TodoItemContract.ItemEntry.TABLE_NAME, null, null);
+
+        // Show a toast message depending on whether or not the insertion was successful.
+        if (deletedRowId == -1) {
+            // If the row ID is -1, then there was an error with insertion.
+            Toast.makeText(this, "Error with deleting All ToDo Item(s)", Toast.LENGTH_SHORT).show();
+        } else {
+            // Otherwise, the insertion was successful and we can display a toast with the row ID.
+            Toast.makeText(this, "All ToDo item(s) deleted", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -164,7 +179,8 @@ public class CatalogActivity extends AppCompatActivity {
 
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
-                // Do nothing for now
+                deleteAllTodoItems();
+                displayDatabaseInfo();
                 return true;
         }
         return super.onOptionsItemSelected(item);

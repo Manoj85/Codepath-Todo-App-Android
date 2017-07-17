@@ -19,6 +19,9 @@ public class TodoItemDbHelper extends SQLiteOpenHelper {
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ", ";
 
+    private static TodoItemDbHelper mInstance = null;
+
+
     // Create a string that contains the SQL statement to create the "todoitems" table
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TodoItemContract.ItemEntry.TABLE_NAME + " ("
@@ -30,6 +33,16 @@ public class TodoItemDbHelper extends SQLiteOpenHelper {
 
     // Create a string that contains the SQL statement to Drop the `todoitems` table
     private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + TodoItemContract.ItemEntry.TABLE_NAME;
+
+    public static TodoItemDbHelper getInstance(Context ctx) {
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        // See this article for more information: http://bit.ly/6LRzfx
+        if (mInstance == null) {
+            mInstance = new TodoItemDbHelper(ctx.getApplicationContext());
+        }
+        return mInstance;
+    }
 
     /**
      * Constructs a new instance of {@link TodoItemDbHelper}

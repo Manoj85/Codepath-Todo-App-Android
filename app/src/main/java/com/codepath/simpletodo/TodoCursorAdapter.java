@@ -69,22 +69,54 @@ public class TodoCursorAdapter extends CursorAdapter {
         // Find individual views that we want to modify in the list item layout
         TextView nameTextView = (TextView) view.findViewById(R.id.name);
         TextView notesTextView = (TextView) view.findViewById(R.id.notes);
+        TextView statusTextView =  (TextView) view.findViewById(R.id.status);
+        TextView priorityTextView =  (TextView) view.findViewById(R.id.priority);
 
         // Find the columns of todoitem attributes that we're interested in
         int nameColumnIndex = cursor.getColumnIndex(ItemEntry.COLUMN_ITEM_NAME);
         int notesColumnIndex = cursor.getColumnIndex(ItemEntry.COLUMN_ITEM_NOTES);
-        // int priorityColumnIndex = cursor.getColumnIndex(ItemEntry.COLUMN_ITEM_PRIORITY);
-        // int statusColumnIndex = cursor.getColumnIndex(ItemEntry.COLUMN_ITEM_STATUS);
+        int priorityColumnIndex = cursor.getColumnIndex(ItemEntry.COLUMN_ITEM_PRIORITY);
+        int statusColumnIndex = cursor.getColumnIndex(ItemEntry.COLUMN_ITEM_STATUS);
 
         // Read the todoitem attributes from the Cursor for the current todoitem
         String itemName = cursor.getString(nameColumnIndex);
         String itemNotes = cursor.getString(notesColumnIndex);
-        // String itemPriority = cursor.getString(priorityColumnIndex);
-        // String itemStatus = cursor.getString(statusColumnIndex);
+        int priority = cursor.getInt(priorityColumnIndex);
+        int status = cursor.getInt(statusColumnIndex);
+
+        String itemPriority = "";
+        String itemStatus = "";
+
+        switch (priority) {
+            case ItemEntry.PRIORITY_MEDIUM:
+                itemPriority = context.getString(R.string.priority_medium);
+                break;
+            case ItemEntry.PRIORITY_HIGH:
+                itemPriority = context.getString(R.string.priority_high);
+                break;
+            default:
+                itemPriority = context.getString(R.string.priority_low);
+                break;
+        }
+
+        switch (status) {
+            case ItemEntry.STATUS_TODO:
+                itemStatus = context.getString(R.string.status_todo);
+                break;
+            case ItemEntry.STATUS_INPROGRESS:
+                itemStatus = context.getString(R.string.status_inprogress);
+                break;
+            default:
+                itemStatus = context.getString(R.string.status_done);
+                break;
+        }
+
 
         // Update the TextViews with the attributes for the current todoitem
         nameTextView.setText(itemName);
         notesTextView.setText(itemNotes);
+        statusTextView.setText(itemStatus);
+        priorityTextView.setText(itemPriority);
     }
 
 

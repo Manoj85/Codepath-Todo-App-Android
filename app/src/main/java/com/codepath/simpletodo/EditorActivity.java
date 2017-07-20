@@ -23,7 +23,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.codepath.simpletodo.data.TodoItemContract;
 import com.codepath.simpletodo.data.TodoItemContract.ItemEntry;
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -48,17 +47,17 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     /**
      * Priority of the TodoItem. The possible valid values are in the TodoItemContract.java file:
-     * {@link TodoItemContract.ItemEntry#PRIORITY_LOW}, {@link TodoItemContract.ItemEntry#PRIORITY_MEDIUM}, or
-     * {@link TodoItemContract.ItemEntry#PRIORITY_HIGH}.
+     * {@link ItemEntry#PRIORITY_LOW}, {@link ItemEntry#PRIORITY_MEDIUM}, or
+     * {@link ItemEntry#PRIORITY_HIGH}.
      */
-    private int mPriority = TodoItemContract.ItemEntry.PRIORITY_LOW;
+    private int mPriority = ItemEntry.PRIORITY_LOW;
 
     /**
      * Status of the TodoItem. The possible valid values are in the TodoItemContract.java file:
-     * {@link TodoItemContract.ItemEntry#STATUS_TODO}, {@link TodoItemContract.ItemEntry#STATUS_INPROGRESS}, or
-     * {@link TodoItemContract.ItemEntry#STATUS_DONE}.
+     * {@link ItemEntry#STATUS_TODO}, {@link ItemEntry#STATUS_INPROGRESS}, or
+     * {@link ItemEntry#STATUS_DONE}.
      */
-    private int mStatus = TodoItemContract.ItemEntry.STATUS_TODO;
+    private int mStatus = ItemEntry.STATUS_TODO;
 
     /** Boolean flag that keeps track of whether the item has been edited (true) or not (false) */
     private boolean mItemHasChanged = false;
@@ -195,10 +194,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // Create a ContentValues object where column names are the keys,
         // and todoitem attributes from the editor are the values
         ContentValues values = new ContentValues();
-        values.put(TodoItemContract.ItemEntry.COLUMN_ITEM_NAME, nameString);
-        values.put(TodoItemContract.ItemEntry.COLUMN_ITEM_NOTES, notesString);
-        values.put(TodoItemContract.ItemEntry.COLUMN_ITEM_PRIORITY, mPriority);
-        values.put(TodoItemContract.ItemEntry.COLUMN_ITEM_STATUS, mStatus);
+        values.put(ItemEntry.COLUMN_ITEM_NAME, nameString);
+        values.put(ItemEntry.COLUMN_ITEM_NOTES, notesString);
+        values.put(ItemEntry.COLUMN_ITEM_PRIORITY, mPriority);
+        values.put(ItemEntry.COLUMN_ITEM_STATUS, mStatus);
 
         // Determine if this is a new or existing item by checking if mCurrentTodoItemUri is null or not
         if (mCurrentTodoItemUri == null) {

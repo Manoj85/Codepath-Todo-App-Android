@@ -9,7 +9,7 @@
     <!-- These are the options displayed in the status drop-down spinner -->
     <string-array name="array_status_options">
         <item>@string/status_todo</item>
-        <item>@string/status_done</item>
         <item>@string/status_inprogress</item>
+        <item>@string/status_done</item>
     </string-array>
 </resources>

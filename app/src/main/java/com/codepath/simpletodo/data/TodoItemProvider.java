@@ -7,6 +7,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 
 import com.codepath.simpletodo.data.TodoItemContract.ItemEntry;
 
@@ -129,7 +130,32 @@ public class TodoItemProvider extends ContentProvider {
      * Return the new content URI for that specific row in the database.
      */
     private Uri insertTodoItem(Uri uri, ContentValues values) {
-        return null;
+        // Check that the name is not null
+        String name = values.getAsString(ItemEntry.COLUMN_ITEM_NAME);
+        if (name == null) {
+            throw new IllegalArgumentException("TodoItem requires a name");
+        }
+
+        // Check that the priority is valid
+        Integer priority = values.getAsInteger(ItemEntry.COLUMN_ITEM_PRIORITY);
+        if (priority == null || !ItemEntry.isValidPriority(priority)) {
+            throw new IllegalArgumentException("TodoItem requires valid priority");
+        }
+
+        // Get Writable database
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        // Insert the new item with the given values
+        long newRowId = db.insert(ItemEntry.TABLE_NAME, null, values);
+
+        // If the ID is -1, then the insertion failed. Log an error and return null.
+        if(newRowId == -1) {
+            Log.e(LOG_TAG, "Failed to insert row for " + uri);
+            return null;
+        }
+
+        // Return the new URI with the ID (of the newly inserted row) appended at the end
+        return ContentUris.withAppendedId(uri, newRowId);
     }
 
     /**
@@ -137,7 +163,58 @@ public class TodoItemProvider extends ContentProvider {
      */
     @Override
     public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
-        return 0;
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case TODOITEMS:
+                return updateTodoItem(uri, contentValues, selection, selectionArgs);
+            case TODOITEM_ID:
+                // For the TODOITEM_ID code, extract out the ID from the URI,
+                // so we know which row to update. Selection will be "_id=?" and selection
+                // arguments will be a String array containing the actual ID.
+                selection = ItemEntry._ID + "=?";
+                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                return updateTodoItem(uri, contentValues, selection, selectionArgs);
+            default:
+                throw new IllegalArgumentException("Update is not supported for " + uri);
+        }
+    }
+
+    /**
+     * Update todoitems in the database with the given content values. Apply the changes to the rows
+     * specified in the selection and selection arguments (which could be 0 or 1 or more items).
+     * Return the number of rows that were successfully updated.
+     */
+    private int updateTodoItem(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+
+        // If the {@link ItemEntry#COLUMN_ITEM_NAME} key is present,
+        // check that the name value is not null.
+        if(values.containsKey(ItemEntry.COLUMN_ITEM_NAME)) {
+            String name = values.getAsString(ItemEntry.COLUMN_ITEM_NAME);
+            if(name == null) {
+                throw new IllegalArgumentException("TodoItem requires a name");
+            }
+        }
+
+        // If the {@link ItemEntry#COLUMN_ITEM_PRIORITY} key is present,
+        // check that the priority value is valid.
+        if (values.containsKey(ItemEntry.COLUMN_ITEM_PRIORITY)) {
+            Integer priority = values.getAsInteger(ItemEntry.COLUMN_ITEM_PRIORITY);
+            if (priority == null || !ItemEntry.isValidPriority(priority)) {
+                throw new IllegalArgumentException("Item requires valid priority");
+            }
+        }
+
+        // If there are no values to update, then don't try to update the database
+        if (values.size() == 0) {
+            return 0;
+        }
+
+        // Otherwise, get writeable database to update the data
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+
+        // Return the number of rows that were affected
+        return db.update(ItemEntry.TABLE_NAME, values, selection, selectionArgs);
     }
 
     /**
@@ -145,7 +222,22 @@ public class TodoItemProvider extends ContentProvider {
      */
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+        // Get writeable database
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case TODOITEMS:
+                // Delete all rows that match the selection and selection args
+                return db.delete(ItemEntry.TABLE_NAME, selection, selectionArgs);
+            case TODOITEM_ID:
+                // Delete a single row given by the ID in the URI
+                selection = ItemEntry._ID + "=?";
+                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                return db.delete(ItemEntry.TABLE_NAME, selection, selectionArgs);
+            default:
+                throw new IllegalArgumentException("Deletion is not supported for " + uri);
+        }
     }
 
     /**
@@ -153,6 +245,14 @@ public class TodoItemProvider extends ContentProvider {
      */
     @Override
     public String getType(Uri uri) {
-        return null;
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case TODOITEMS:
+                return ItemEntry.CONTENT_LIST_TYPE;
+            case TODOITEM_ID:
+                return ItemEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
+        }
     }
 }

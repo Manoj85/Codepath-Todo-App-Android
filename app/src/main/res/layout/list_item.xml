@@ -102,6 +102,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
                 android:textAppearance="?android:textAppearanceSmall"
+                android:paddingLeft="3dp"
                 android:textColor="#2B3D4D"  />
         </LinearLayout>
 

@@ -14,4 +14,22 @@
 
     <!-- Primary dark color for the editor -->
     <color name="editorColorPrimaryDark">#394450</color>
+
+    <!-- Primary color for STATUS = TODO -->
+    <color name="colorStatusTodo">#394450</color>
+
+    <!-- Primary color for STATUS = INPROGRESS -->
+    <color name="colorStatusInprogress">#394450</color>
+
+    <!-- Primary color for STATUS = DONE -->
+    <color name="colorStatusDone">#394450</color>
+
+    <!-- Primary color for PRIORITY = LOW -->
+    <color name="colorPriorityLow">#394450</color>
+
+    <!-- Primary color for STATUS = MEDIUM -->
+    <color name="colorPriorityMedium">#394450</color>
+
+    <!-- Primary color for STATUS = HIGH -->
+    <color name="colorPriorityHigh">#394450</color>
 </resources>

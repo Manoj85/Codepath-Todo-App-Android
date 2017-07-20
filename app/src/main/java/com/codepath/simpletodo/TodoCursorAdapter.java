@@ -3,6 +3,7 @@ package com.codepath.simpletodo;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,28 +87,36 @@ public class TodoCursorAdapter extends CursorAdapter {
 
         String itemPriority = "";
         String itemStatus = "";
+        int priorityColor = 0;
+        int statusColor = 0;
 
         switch (priority) {
             case ItemEntry.PRIORITY_MEDIUM:
                 itemPriority = context.getString(R.string.priority_medium);
+                priorityColor = Color.MAGENTA;
                 break;
             case ItemEntry.PRIORITY_HIGH:
                 itemPriority = context.getString(R.string.priority_high);
+                priorityColor = Color.RED;
                 break;
             default:
                 itemPriority = context.getString(R.string.priority_low);
+                priorityColor = Color.GREEN;
                 break;
         }
-
+;
         switch (status) {
             case ItemEntry.STATUS_TODO:
                 itemStatus = context.getString(R.string.status_todo);
+                statusColor = Color.RED;
                 break;
             case ItemEntry.STATUS_INPROGRESS:
                 itemStatus = context.getString(R.string.status_inprogress);
+                statusColor = Color.BLUE;
                 break;
             default:
                 itemStatus = context.getString(R.string.status_done);
+                statusColor = Color.BLUE;
                 break;
         }
 
@@ -117,6 +126,8 @@ public class TodoCursorAdapter extends CursorAdapter {
         notesTextView.setText(itemNotes);
         statusTextView.setText(itemStatus);
         priorityTextView.setText(itemPriority);
+        priorityTextView.setTextColor(priorityColor);
+        statusTextView.setTextColor(statusColor);
     }
 
 
